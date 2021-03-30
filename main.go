@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"unicode"
+	"strings"
 )
 
 func removeSpace(s string) string {
@@ -22,14 +23,14 @@ func removeSpace(s string) string {
 }
 
 func binaryToString(s string) string {
-	cleanBinary := removeSpace(s)
-	var out []byte
-	for i := 0; i+8 <= len(cleanBinary); i += 8 {
-		b, err := strconv.ParseUint(cleanBinary[i:i+8], 2, 64)
+	binarys := strings.Fields(s)
+	out := make([]byte, len(binarys))
+	for i := 0; i < len(binarys); i ++ {
+		b, err := strconv.ParseInt(string(binarys[i]), 2, 64)
 		if err != nil {
 			panic(err)
 		}
-		out = append(out, byte(b))
+		out[i] = byte(b)
 	}
 	return string(out)
 }
